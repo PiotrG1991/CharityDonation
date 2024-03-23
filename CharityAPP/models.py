@@ -1,6 +1,8 @@
 from django.contrib.auth.models import User
 from django.db import models
 
+
+
 # Create your models here.
 class Category(models.Model):
     name = models.CharField(max_length=50)
@@ -10,7 +12,6 @@ class Category(models.Model):
 
 
 class Institution(models.Model):
-    # Wybór typów instytucji
     INSTITUTION_TYPES = (
         ('fundacja', 'Fundacja'),
         ('organizacja', 'Organizacja pozarządowa'),
