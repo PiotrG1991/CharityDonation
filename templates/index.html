@@ -78,103 +78,93 @@
       </ul>
 
       <!-- SLIDE 1 -->
-      <div class="help--slides active" data-id="1">
-        <p>W naszej bazie znajdziesz listę zweryfikowanych Fundacji, z którymi współpracujemy. Możesz sprawdzić czym się zajmują, komu pomagają i czego potrzebują.</p>
+<div class="help--slides active" data-id="1">
+    <p>W naszej bazie znajdziesz listę zweryfikowanych Fundacji, z którymi współpracujemy. Możesz sprawdzić czym się zajmują, komu pomagają i czego potrzebują.</p>
 
-        <ul class="help--slides-items">
-        {% for institution in institutions %}
-        {% if institution.type == 'fundacja' %}
-          <li>
-            <div class="col">
-              <div class="title">{{ institution.name }}</div>
-                <div class="subtitle">{{ institution.description }}</div>
-              </div>
-              <div class="col">
-                <div class="text">
-                  {% for category in institution.categories.all %}
-                    {{ category.name }},
-                  {% endfor %}
+    <ul class="help--slides-items">
+        {% for institution in fundacje_page_obj %}
+            <li>
+                <div class="col">
+                    <div class="title">{{ institution.name }}</div>
+                    <div class="subtitle">{{ institution.description }}</div>
                 </div>
-              </div>
-          </li>
-        {% endif %}
+                <div class="col">
+                    <div class="text">
+                        {% for category in institution.categories.all %}
+                            {{ category.name }},
+                        {% endfor %}
+                    </div>
+                </div>
+            </li>
         {% endfor %}
-        </ul>
+    </ul>
 
-        <ul class="help--slides-pagination">
-          <li><a href="#" class="btn btn--small btn--without-border active" data-page="1">1</a></li>
-          <li><a href="#" class="btn btn--small btn--without-border" data-page="2">2</a></li>
-          <li><a href="#" class="btn btn--small btn--without-border" data-page="3">3</a></li>
-        </ul>
+    <ul class="help--slides-pagination" id="fundacje-pagination">
+        {% for num in fundacje_page_obj.paginator.page_range %}
+            <li><a href="#" class="btn btn--small btn--without-border" data-page="{{ num }}">{{ num }}</a></li>
+        {% endfor %}
+    </ul>
+</div>
 
-      </div>
+<!-- SLIDE 2 -->
+<div class="help--slides" data-id="2">
+    <p>
+        W naszej bazie znajdziesz listę zweryfikowanych Organizacji Pozarządowych, z którymi współpracujemy.
+        Możesz sprawdzić czym się zajmują, komu pomagają i czego potrzebują.
+    </p>
+    <ul class="help--slides-items">
+        {% for institution in organizacje_page_obj %}
+            <li>
+                <div class="col">
+                    <div class="title">{{ institution.name }}</div>
+                    <div class="subtitle">{{ institution.description }}</div>
+                </div>
+                <div class="col">
+                    <div class="text">
+                        {% for category in institution.categories.all %}
+                            {{ category.name }}
+                        {% endfor %}
+                    </div>
+                </div>
+            </li>
+        {% endfor %}
+    </ul>
+    <ul class="help--slides-pagination" id="organizacje-pagination">
+        {% for num in organizacje_page_obj.paginator.page_range %}
+            <li><a href="#" class="btn btn--small btn--without-border" data-page="{{ num }}">{{ num }}</a></li>
+        {% endfor %}
+    </ul>
+</div>
 
+<!-- SLIDE 3 -->
+<div class="help--slides" data-id="3">
+    <p>W naszej bazie znajdziesz listę zweryfikowanych Lokalnych Zbiórek, z którymi współpracujemy.
+        Możesz sprawdzić czym się zajmują, komu pomagają i czego potrzebują.</p>
+    <ul class="help--slides-items">
+        {% for institution in zbiorki_page_obj %}
+            <li>
+                <div class="col">
+                    <div class="title">{{ institution.name }}</div>
+                    <div class="subtitle">{{ institution.description }}</div>
+                </div>
+                <div class="col">
+                    <div class="text">
+                        {% for category in institution.categories.all %}
+                            {{ category.name }}
+                        {% endfor %}
+                    </div>
+                </div>
+            </li>
+        {% endfor %}
+    </ul>
 
-      <!-- SLIDE 2 -->
-      <div class="help--slides" data-id="2">
-        <p>
-          W naszej bazie znajdziesz listę zweryfikowanych Organizacji Pozarządowych, z którymi współpracujemy.
-          Możesz sprawdzić czym się zajmują, komu pomagają i czego potrzebują.
-        </p>
-        <ul class="help--slides-items">
-          {% for institution in institutions %}
-          {% if institution.type == 'organizacja' %}
-          <li>
-            <div class="col">
-            <div class="title">{{ institution.name }}</div>
-            <div class="subtitle">{{ institution.description }}</div>
-            </div>
-            <div class="col">
-              <div class="text">
-              {% for category in institution.categories.all %}
-              {{ category.name }}
-              {% endfor %}
-            </div>
-            </div>
-          </li>
-          {% endif %}
-          {% endfor %}
-      </ul>
-
-
-        <ul class="help--slides-pagination">
-          <li><a href="#" class="btn btn--small btn--without-border active" data-page="1">1</a></li>
-          <li><a href="#" class="btn btn--small btn--without-border" data-page="2">2</a></li>
-          <li><a href="#" class="btn btn--small btn--without-border" data-page="3">3</a></li>
-          <li><a href="#" class="btn btn--small btn--without-border" data-page="4">4</a></li>
-          <li><a href="#" class="btn btn--small btn--without-border" data-page="5">5</a></li>
-        </ul>
-      </div>
-
-      <!-- SLIDE 3 -->
-      <div class="help--slides" data-id="3">
-        <p>W naszej bazie znajdziesz listę zweryfikowanych Organizacji Pozarządowych, z którymi współpracujemy.
-          Możesz sprawdzić czym się zajmują, komu pomagają i czego potrzebują.</p>
-        <ul class="help--slides-items">
-          {% for institution in institutions %}
-          {% if institution.type == 'zbiórka_lokalna' %}
-          <li>
-            <div class="col">
-              <div class="title">{{ institution.name }}</div>
-              <div class="subtitle">{{ institution.description }}</div>
-            </div>
-
-            <div class="col"><div class="text">
-              {% for category in institution.categories.all %}
-              {{ category.name }}
-              {% endfor %}
-            </div></div>
-          </li>
-          {% endif %}
-          {% endfor %}
-        </ul>
+    <ul class="help--slides-pagination" id="zbiorki-pagination">
+        {% for num in zbiorki_page_obj.paginator.page_range %}
+            <li><a href="#" class="btn btn--small btn--without-border" data-page="{{ num }}">{{ num }}</a></li>
+        {% endfor %}
+    </ul>
+</div>
 
 
-        <ul class="help--slides-pagination">
-          <li><a href="#" class="btn btn--small btn--without-border active" data-page="1">1</a></li>
-          <li><a href="#" class="btn btn--small btn--without-border" data-page="2">2</a></li>
-        </ul>
-
-      </div>
     </section>
 {% endblock %}

@@ -20,7 +20,7 @@ class Login(View):
             next_url = request.GET.get('next', 'LandingPage')
             return redirect(next_url)
         else:
-            return render(request, 'login.html', {'error_message': 'Nieprawidłowy email lub hasło.'})
+            return redirect('register_view')
 
 
 class Register(View):
@@ -38,7 +38,7 @@ class Register(View):
 
             return render(request, 'register.html')
 
-        user = User.objects.create_user(email, email, password, first_name=name, last_name=surname)
+        user = User.objects.create_user(username=email, email=email, password=password, first_name=name, last_name=surname)
         if user:
             return redirect('login_view')
         return render(request, 'register.html')
