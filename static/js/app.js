@@ -182,17 +182,11 @@ document.addEventListener("DOMContentLoaded", function() {
     this.init();
   }
 
-  /**
-   * Init all methods
-   */
   init() {
     this.events();
     this.updateForm();
   }
 
-  /**
-   * All events that are happening in form
-   */
   events() {
     // Next step
     this.$next.forEach(btn => {
@@ -237,14 +231,8 @@ document.addEventListener("DOMContentLoaded", function() {
     });
   }
 
-  /**
-   * Update form front-end
-   * Show next or previous section etc.
-   */
   updateForm() {
     this.$step.innerText = this.currentStep;
-
-    // TODO: Validation
 
     this.slides.forEach(slide => {
       slide.classList.remove("active");
@@ -257,20 +245,75 @@ document.addEventListener("DOMContentLoaded", function() {
     this.$stepInstructions[0].parentElement.parentElement.hidden = this.currentStep >= 6;
     this.$step.parentElement.hidden = this.currentStep >= 6;
 
-    // TODO: get data from inputs and show them in summary
+    if (this.currentStep === 5) {
+      this.displaySummary();
+    }
   }
 
-  /**
-   * Submit form
-   *
-   * TODO: validation, send data to server
-   */
-  submit(e) {
-    e.preventDefault();
-    this.currentStep++;
-    this.updateForm();
+  displaySummary() {
+    const formData = new FormData(this.$form.querySelector("form"));
+    document.getElementById("summary-bags").textContent = formData.get("bags") + " worek/ów z darami";
+    document.getElementById("summary-organization").textContent = `Dla  "${formData.get("organization")}"`;
+    document.getElementById("summary-address").textContent = formData.get("address");
+    document.getElementById("summary-city").textContent = formData.get("city");
+    document.getElementById("summary-postcode").textContent = formData.get("postcode");
+    document.getElementById("summary-phone").textContent = formData.get("phone");
+    document.getElementById("summary-date").textContent = formData.get("data");
+    document.getElementById("summary-time").textContent = formData.get("time");
+    document.getElementById("summary-more-info").textContent = formData.get("more_info");
   }
+
+  submit(e) {
+
+  e.preventDefault();
+
+  const formData = new FormData(this.$form.querySelector("form"));
+  const data = {
+    quantity: formData.get("bags"),
+    categories: formData.getAll("categories"),
+    institution: formData.get("organization"),
+    address: formData.get("address"),
+    phone_number: formData.get("phone"),
+    city: formData.get("city"),
+    zip_code: formData.get("postcode"),
+    pick_up_date: formData.get("data"),
+    pick_up_time: formData.get("time"),
+    pick_up_comment: formData.get("more_info")
+  };
+
+  const csrfToken = getCookie("csrftoken");
+  fetch('/add_donation/', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'X-CSRFToken': csrfToken
+    },
+    body: JSON.stringify(data)
+  })
+  .then(response => {
+    if (!response.ok) {
+      throw new Error('Wystąpił błąd podczas przetwarzania żądania.');
+    }
+    return response.json();
+  })
+      .then(data => {
+
+    console.log(data);
+    window.location.href = data.redirect_url;
+})
+  .then(data => {
+
+    console.log(data);
+  })
+  .catch(error => {
+    console.error('Błąd:', error);
+  });
 }
+}
+function getCookie(name) {
+    const value = `; ${document.cookie}`;
+    const parts = value.split(`; ${name}=`);
+    if (parts.length === 2) return parts.pop().split(';').shift();}
 
 const form = document.querySelector(".form--steps");
 if (form !== null) {

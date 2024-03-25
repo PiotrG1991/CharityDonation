@@ -6,29 +6,40 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta http-equiv="X-UA-Compatible" content="ie=edge" />
     <title>Document</title>
-    <link rel="stylesheet" href="css/style.css" />
+    <link rel="stylesheet" href="{% static 'css/style.css' %}"/>
   </head>
   <body>
     <header class="header--form-page">
       <nav class="container container--70">
-        <ul class="nav--actions">
-          <li class="logged-user">
-            Witaj Agata
-            <ul class="dropdown">
-              <li><a href="#">Profil</a></li>
-              <li><a href="#">Moje zbiórki</a></li>
-              <li><a href="#">Wyloguj</a></li>
-            </ul>
-          </li>
-        </ul>
-
-        <ul>
-          <li><a href="index.html" class="btn btn--without-border active">Start</a></li>
-          <li><a href="index.html#steps" class="btn btn--without-border">O co chodzi?</a></li>
-          <li><a href="index.html#about-us" class="btn btn--without-border">O nas</a></li>
-          <li><a href="index.html#help" class="btn btn--without-border">Fundacje i organizacje</a></li>
-          <li><a href="index.html#contact" class="btn btn--without-border">Kontakt</a></li>
-        </ul>
+          {% if user.is_authenticated %}
+                  <div class="dropdown">
+                      <ul class="nav--actions">
+                        <li class="logged-user">
+                        Witaj {{ user.first_name }}
+                        <ul class="dropdown">
+                            <li><a href="#">Profil</a></li>
+                            <li><a href="#">Ustawienia</a></li>
+                            <li><a href="{% url 'logout_view' %}">Wyloguj</a></li>
+                        </ul>
+                        </li>
+                      </ul>
+                  {% if user.is_superuser %}
+                      <a href="{% url 'admin:index' %}" class="btn">Panel administracyjny</a>
+                  {% endif %}
+                  </div>
+              {% else %}
+                  <ul class="nav--actions">
+                    <li><a href="{% url 'login_view' %}" class="btn btn--small btn--without-border">Zaloguj</a></li>
+                    <li><a href="{% url 'register_view' %}" class="btn btn--small btn--highlighted">Załóż konto</a></li>
+                  </ul>
+              {% endif %}
+              <ul>
+                <li><a href="{% url 'LandingPage' %}" class="btn btn--without-border active">Start</a></li>
+                <li><a href="{% url 'LandingPage' %}#steps" class="btn btn--without-border">O co chodzi?</a></li>
+                <li><a href="{% url 'LandingPage' %}#about-us" class="btn btn--without-border">O nas</a></li>
+                <li><a href="{% url 'LandingPage' %}#help" class="btn btn--without-border">Fundacje i organizacje</a></li>
+                <li><a href="{% url 'LandingPage' %}#contact" class="btn btn--without-border">Kontakt</a></li>
+              </ul>
       </nav>
 
       <div class="slogan container container--90">
@@ -65,12 +76,8 @@
       <div class="bottom-line">
         <span class="bottom-line--copy">Copyright &copy; 2018</span>
         <div class="bottom-line--icons">
-          <a href="#" class="btn btn--small"
-            ><img src="images/icon-facebook.svg"
-          /></a>
-          <a href="#" class="btn btn--small"
-            ><img src="images/icon-instagram.svg"
-          /></a>
+         <a href="#" class="btn btn--small"><img src="{% static 'images/icon-facebook.svg' %}"/></a>
+          <a href="#" class="btn btn--small"><img src="{% static 'images/icon-instagram.svg' %}"/></a>
         </div>
       </div>
     </footer>
