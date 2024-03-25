@@ -38,7 +38,9 @@ class AddDonation(View):
     def get(self, request):
         categories = Category.objects.all()
         institutions = Institution.objects.all()
+        institution_categories = {inst.id: [cat.name for cat in inst.categories.all()] for inst in institutions}
         return render(request, 'form.html', {
             'categories': categories,
-            'institutions': institutions})
-
+            'institution_categories': institution_categories,
+            'institutions': institutions
+        })
