@@ -24,6 +24,7 @@ urlpatterns = [
     path('', views.LandingPage.as_view(), name='LandingPage'),
     path('add_donation/', views.AddDonation.as_view(), name='AddDonation'),
     path('form-confirmation/', views.Confirmation.as_view(), name='Confirmation'),
+    path('profile/', views.UserProfile.as_view(), name='profile'),
 
     path('accounts/', include('accounts.urls')),
 ]

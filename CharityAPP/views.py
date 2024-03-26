@@ -1,3 +1,4 @@
+from django.contrib.auth.models import User
 from django.core.paginator import Paginator
 import json
 from django.db.models import Sum
@@ -95,3 +96,10 @@ class AddDonation(View):
 class Confirmation(View):
     def get(self, request):
         return render(request, 'form-confirmation.html')
+
+
+class UserProfile(View):
+    def get(self, request):
+        user = request.user
+
+        return render(request, 'user-profile.html', {'user': user})
