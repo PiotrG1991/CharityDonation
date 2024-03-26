@@ -56,6 +56,66 @@
         </section>
     </header>
 
+    <section class="form--steps-container">
+    <h2>Dary do odebrania:</h2>
+    <ul>
+        {% for donation in donations %}
+            {% if not donation.is_taken %}
+            <li>
+                <h2>Darowizna {{ forloop.counter }}</h2>
+                <h1>Ilość worków: {{ donation.quantity }}</h1>
+                <h1>Organizacja: {{ donation.institution.name }}</h1>
+                <h1>Kategorie:
+                    {% for category in donation.categories.all %}
+                        {{ category.name }}{% if not forloop.last %}, {% endif %}
+                    {% endfor %}
+                </h1>
+                <h1>Data odbioru: {{ donation.pick_up_date }}</h1>
+                <form  method="post" action="{% url 'take_donation' donation.id %}">
+                    {% csrf_token %}
+                    <button class="btn  btn--without-border active" type="submit">Oznacz jako zabrane</button>
+                </form>
+            </li>
+            {% endif %}
+        {% empty %}
+            <li>Brak przekazanych darów.</li>
+        {% endfor %}
+    </ul>
+</section>
+
+<section class="form--steps-container">
+    <h2>Przekazane dary:</h2>
+    <ul>
+        {% if donations %}
+            {% for donation in donations %}
+                {% if donation.is_taken %}
+                <li>
+                    <h2>Darowizna {{ forloop.counter }}</h2>
+                    <h1>Ilość worków: {{ donation.quantity }}</h1>
+                    <h1>Organizacja: {{ donation.institution.name }}</h1>
+                    <h1>Kategorie:
+                        {% for category in donation.categories.all %}
+                            {{ category.name }}{% if not forloop.last %}, {% endif %}
+                        {% endfor %}
+                    </h1>
+                    <h1>Data odbioru: {{ donation.pick_up_date }}</h1>
+                    <form  method="post" action="{% url 'take_donation' donation.id %}">
+                        {% csrf_token %}
+                        <button class="btn  btn--without-border active" type="submit">Oznacz jako niezabrane</button>
+                    </form>
+                </li>
+                {% endif %}
+            {% empty %}
+                <li>Brak przekazanych darów.</li>
+            {% endfor %}
+        {% else %}
+            <li>Brak przekazanych darów.</li>
+        {% endif %}
+    </ul>
+</section>
+
+
+
 
 <footer>
   <div class="contact">

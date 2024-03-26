@@ -3,7 +3,7 @@ from django.core.paginator import Paginator
 import json
 from django.db.models import Sum
 from django.http import JsonResponse
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.views import View
 
 from CharityAPP.forms import DonationForm
@@ -101,5 +101,14 @@ class Confirmation(View):
 class UserProfile(View):
     def get(self, request):
         user = request.user
+        donations = Donation.objects.filter(user=user)
+        return render(request, 'user-profile.html', {'user': user,
+                                                     'donations': donations})
 
-        return render(request, 'user-profile.html', {'user': user})
+
+class TakeDonation(View):
+    def post(self, request, donation_id):
+        donation = Donation.objects.get(id=donation_id)
+        donation.is_taken = not donation.is_taken
+        donation.save()
+        return redirect('profile')
