@@ -10,14 +10,14 @@
     <script src="{% static 'js/app.js' %}"></script>
   </head>
   <body>
-    <header class="header--form-page">
+    <header >
       <nav class="container container--70">
         <ul class="nav--actions">
           <li class="logged-user">
             Witaj {{ user.first_name }}
             <ul class="dropdown">
               <li><a href="{% url 'profile' %}">Profil</a></li>
-              <li><a href="#">Ustawienia</a></li>
+              <li><a href="{% url 'settings' %}">Ustawienia</a></li>
               {% if user.is_superuser %}
               <li><a href="{% url 'admin:index' %}">Panel administracyjny</a></li>
               {% endif %}

@@ -1,3 +1,5 @@
+from django.contrib.auth import update_session_auth_hash
+from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from django.core.paginator import Paginator
 import json
@@ -112,3 +114,53 @@ class TakeDonation(View):
         donation.is_taken = not donation.is_taken
         donation.save()
         return redirect('profile')
+
+
+@login_required
+def settings(request):
+    if request.method == 'POST':
+        # Pobierz dane z formularza
+        name = request.POST.get('name')
+        surname = request.POST.get('surname')
+        email = request.POST.get('email')
+        confirm_password = request.POST.get('confirm_password')
+
+        # Sprawdź poprawność hasła
+        if not request.user.check_password(confirm_password):
+            return render(request, 'user_management/settings.html', {'user_data': request.user, 'error': 'Niepoprawne hasło'})
+
+        # Zaktualizuj dane użytkownika
+        request.user.first_name = name
+        request.user.last_name = surname
+        request.user.email = email
+        request.user.save()
+
+        # Przekieruj użytkownika gdziekolwiek po pomyślnym zapisie
+        return redirect('settings')
+
+    user_data = {
+        'first_name': request.user.first_name,
+        'last_name': request.user.last_name,
+        'email': request.user.email,
+    }
+    return render(request, 'user_management/settings.html', {'user_data': user_data, 'error': None})
+
+@login_required
+def change_password(request):
+    if request.method == 'POST':
+        old_password = request.POST.get('old_password')
+        new_password1 = request.POST.get('new_password1')
+        new_password2 = request.POST.get('new_password2')
+
+        if not request.user.check_password(old_password):
+            return render(request, 'user_management/change_password.html', {'error': 'Niepoprawne stare hasło.'})
+
+        if new_password1 != new_password2:
+            return render(request, 'user_management/change_password.html', {'error': 'Nowe hasła nie pasują do siebie.'})
+
+        request.user.set_password(new_password1)
+        request.user.save()
+        update_session_auth_hash(request, request.user)
+        return redirect('settings')
+    else:
+        return render(request, 'user_management/change_password.html')
