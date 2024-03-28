@@ -1,13 +1,11 @@
 from django.contrib.auth import update_session_auth_hash
 from django.contrib.auth.decorators import login_required
-from django.contrib.auth.models import User
 from django.core.paginator import Paginator
 import json
 from django.db.models import Sum
 from django.http import JsonResponse
 from django.shortcuts import render, redirect
 from django.views import View
-
 from CharityAPP.forms import DonationForm
 from CharityAPP.models import Institution, Donation, Category
 
@@ -35,9 +33,11 @@ class LandingPage(View):
         zbiorki_page_obj = paginator_zbiorki.get_page(zbiorki_page_number)
 
         return render(request, 'index.html', {'bags_count': bags_count, 'organizations_count':
-            organizations_count, 'categories': categories, 'fundacje_page_obj': fundacje_page_obj,
-                                              'organizacje_page_obj': organizacje_page_obj,
-                                              'zbiorki_page_obj': zbiorki_page_obj})
+            organizations_count, 'categories': categories,
+            'fundacje_page_obj': fundacje_page_obj,
+            'organizacje_page_obj': organizacje_page_obj,
+            'zbiorki_page_obj': zbiorki_page_obj,
+            })
 
 
 class AddDonation(View):
@@ -74,7 +74,6 @@ class AddDonation(View):
                 valid_categories.append(category)
             except Category.DoesNotExist:
                 pass
-
 
         institution = Institution.objects.get(name=institution_name)
         donation = Donation.objects.create(
@@ -127,7 +126,8 @@ def settings(request):
 
         # Sprawdź poprawność hasła
         if not request.user.check_password(confirm_password):
-            return render(request, 'user_management/settings.html', {'user_data': request.user, 'error': 'Niepoprawne hasło'})
+            return render(request, 'user_management/settings.html',
+                          {'user_data': request.user, 'error': 'Niepoprawne hasło'})
 
         # Zaktualizuj dane użytkownika
         request.user.first_name = name
@@ -145,6 +145,7 @@ def settings(request):
     }
     return render(request, 'user_management/settings.html', {'user_data': user_data, 'error': None})
 
+
 @login_required
 def change_password(request):
     if request.method == 'POST':
@@ -153,10 +154,12 @@ def change_password(request):
         new_password2 = request.POST.get('new_password2')
 
         if not request.user.check_password(old_password):
-            return render(request, 'user_management/change_password.html', {'error': 'Niepoprawne stare hasło.'})
+            return render(request, 'user_management/change_password.html',
+                          {'error': 'Niepoprawne stare hasło.'})
 
         if new_password1 != new_password2:
-            return render(request, 'user_management/change_password.html', {'error': 'Nowe hasła nie pasują do siebie.'})
+            return render(request, 'user_management/change_password.html',
+                          {'error': 'Nowe hasła nie pasują do siebie.'})
 
         request.user.set_password(new_password1)
         request.user.save()

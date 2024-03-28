@@ -80,7 +80,6 @@
       <!-- SLIDE 1 -->
 <div class="help--slides active" data-id="1">
     <p>W naszej bazie znajdziesz listę zweryfikowanych Fundacji, z którymi współpracujemy. Możesz sprawdzić czym się zajmują, komu pomagają i czego potrzebują.</p>
-
     <ul class="help--slides-items">
         {% for institution in fundacje_page_obj %}
             <li>
@@ -98,20 +97,16 @@
             </li>
         {% endfor %}
     </ul>
-
     <ul class="help--slides-pagination" id="fundacje-pagination">
         {% for num in fundacje_page_obj.paginator.page_range %}
-            <li><a href="#" class="btn btn--small btn--without-border" data-page="{{ num }}">{{ num }}</a></li>
+            <li ><a href="?fundacje_page={{ num }}" class="btn btn--small btn--without-border" data-page="{{ num }}">{{ num }}</a></li>
         {% endfor %}
     </ul>
 </div>
 
 <!-- SLIDE 2 -->
 <div class="help--slides" data-id="2">
-    <p>
-        W naszej bazie znajdziesz listę zweryfikowanych Organizacji Pozarządowych, z którymi współpracujemy.
-        Możesz sprawdzić czym się zajmują, komu pomagają i czego potrzebują.
-    </p>
+    <p>W naszej bazie znajdziesz listę zweryfikowanych Organizacji Pozarządowych, z którymi współpracujemy. Możesz sprawdzić czym się zajmują, komu pomagają i czego potrzebują.</p>
     <ul class="help--slides-items">
         {% for institution in organizacje_page_obj %}
             <li>
@@ -131,15 +126,14 @@
     </ul>
     <ul class="help--slides-pagination" id="organizacje-pagination">
         {% for num in organizacje_page_obj.paginator.page_range %}
-            <li><a href="#" class="btn btn--small btn--without-border" data-page="{{ num }}">{{ num }}</a></li>
+            <li><a href="?organizacje_page={{ num }}" class="btn btn--small btn--without-border" data-page="{{ num }}">{{ num }}</a></li>
         {% endfor %}
     </ul>
 </div>
 
 <!-- SLIDE 3 -->
 <div class="help--slides" data-id="3">
-    <p>W naszej bazie znajdziesz listę zweryfikowanych Lokalnych Zbiórek, z którymi współpracujemy.
-        Możesz sprawdzić czym się zajmują, komu pomagają i czego potrzebują.</p>
+    <p>W naszej bazie znajdziesz listę zweryfikowanych Lokalnych Zbiórek, z którymi współpracujemy. Możesz sprawdzić czym się zajmują, komu pomagają i czego potrzebują.</p>
     <ul class="help--slides-items">
         {% for institution in zbiorki_page_obj %}
             <li>
@@ -157,13 +151,13 @@
             </li>
         {% endfor %}
     </ul>
-
     <ul class="help--slides-pagination" id="zbiorki-pagination">
         {% for num in zbiorki_page_obj.paginator.page_range %}
-            <li><a href="#" class="btn btn--small btn--without-border" data-page="{{ num }}">{{ num }}</a></li>
+            <li><a href="?zbiorki_page={{ num }}" class="btn btn--small btn--without-border" data-page="{{ num }}">{{ num }}</a></li>
         {% endfor %}
     </ul>
 </div>
+
 
 
     </section>
