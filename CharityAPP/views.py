@@ -56,7 +56,7 @@ class AddDonation(View):
     def post(self, request):
         data = json.loads(request.body)
         quantity = data.get('quantity')
-        category_names = data.get('categories')  # Otrzymujemy listę nazw kategorii
+        category_names = data.get('categories')
         institution_name = data.get('institution')
         address = data.get('address')
         phone_number = data.get('phone_number')
